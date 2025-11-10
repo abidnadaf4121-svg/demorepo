@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IndiaJobs - Find Your Dream Job</title>
+    <style>
+        /* Modern CSS with Indian-inspired colors (saffron, white, green) */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #FF9933, #FFFFFF, #128807);
+            background-attachment: fixed;
+            color: #333;
+        }
+        header {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        header h1 {
+            margin: 0;
+            color: #FF9933;
+            font-size: 2.5em;
+        }
+        .search-container {
+            max-width: 600px;
+            margin: 20px auto;
+            display: flex;
+            gap: 10px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        button {
+            padding: 10px 20px;
+            background: #128807;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        button:hover {
+            background: #0d6b0a;
+        }
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .job-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .job-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .job-card:hover {
+            transform: translateY(-5px);
+        }
+        .job-card h3 {
+            margin: 0 0 10px 0;
+            color: #FF9933;
+        }
+        .job-card p {
+            margin: 5px 0;
+        }
+        .apply-btn {
+            margin-top: 10px;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            margin-top: 40px;
+        }
+        @media (max-width: 768px) {
+            .search-container {
+                flex-direction: column;
+            }
+            .filters {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>IndiaJobs</h1>
+        <p>Your gateway to opportunities in India</p>
+    </header>
+    
+    <main>
+        <div class="search-container">
+            <input type="text" id="search" placeholder="Search for jobs...">
+            <button onclick="searchJobs()">Search</button>
+        </div>
+        
+        <div class="filters">
+            <select id="location">
+                <option value="">All Locations</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Mumbai">Mumbai</option>
+                <option value="Bangalore">Bangalore</option>
+                <option value="Chennai">Chennai</option>
+                <option value="Kolkata">Kolkata</option>
+            </select>
+            <select id="category">
+                <option value="">All Categories</option>
+                <option value="IT">IT</option>
+                <option value="Finance">Finance</option>
+                <option value="Healthcare">Healthcare</option>
+                <option value="Education">Education</option>
+                <option value="Engineering">Engineering</option>
+            </select>
+            <button onclick="filterJobs()">Filter</button>
+        </div>
+        
+        <div class="job-list" id="jobList">
+            <!-- Sample jobs will be populated here -->
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2023 IndiaJobs. Connecting talent with opportunity.</p>
+    </footer>
+    
+    <script>
+        // Sample job data
+        const jobs = [
+            { title: "Software Engineer", company: "TCS", location: "Mumbai", category: "IT", description: "Develop innovative software solutions." },
+            { title: "Data Analyst", company: "Infosys", location: "Bangalore", category: "IT", description: "Analyze data to drive business insights." },
+            { title: "Financial Advisor", company: "HDFC", location: "Delhi", category: "Finance", description: "Provide financial planning services." },
+            { title: "Doctor", company: "AIIMS", location: "Delhi", category: "Healthcare", description: "Deliver quality healthcare." },
+            { title: "Teacher", company: "Kendriya Vidyalaya", location: "Chennai", category: "Education", description: "Educate and inspire students." },
+            { title: "Mechanical Engineer", company: "BHEL", location: "Kolkata", category: "Engineering", description: "Design and maintain machinery." },
+            { title: "Marketing Manager", company: "Reliance", location: "Mumbai", category: "Finance", description: "Lead marketing campaigns." },
+            { title: "Nurse", company: "Apollo Hospitals", location: "Bangalore", category: "Healthcare", description: "Provide patient care." }
+        ];
+        
+        // Function to render jobs
+        function renderJobs(jobArray) {
+            const jobList = document.getElementById('jobList');
+            jobList.innerHTML = '';
+            jobArray.forEach(job => {
+                const jobCard = document.createElement('div');
+                jobCard.className = 'job-card';
+                jobCard.innerHTML = `
+                    <h3>${job.title}</h3>
+                    <p><strong>Company:</strong> ${job.company}</p>
+                    <p><strong>Location:</strong> ${job.location}</p>
+                    <p><strong>Category:</strong> ${job.category}</p>
+                    <p>${job.description}</p>
+                    <button class="apply-btn" onclick="applyJob('${job.title}')">Apply Now</button>
+                `;
+                jobList.appendChild(jobCard);
+            });
+        }
+        
+        // Initial render
+        renderJobs(jobs);
+        
+        // Search function
+        function searchJobs() {
+            const query = document.getElementById('search').value.toLowerCase();
+            const filtered = jobs.filter(job => 
+                job.title.toLowerCase().includes(query) || 
+                job.company.toLowerCase().includes(query) || 
+                job.description.toLowerCase().includes(query)
+            );
+            renderJobs(filtered);
+        }
+        
+        // Filter function
+        function filterJobs() {
+            const location = document.getElementById('location').value;
+            const category = document.getElementById('category').value;
+            let filtered = jobs;
+            if (location) {
+                filtered = filtered.filter(job => job.location === location);
+            }
+            if (category) {
+                filtered = filtered.filter(job => job.category === category);
+            }
+            renderJobs(filtered);
+        }
+        
+        // Apply function (placeholder)
+        function applyJob(title) {
+            alert(`Application submitted for ${title}!`);
+        }
+    </script>
+</body>
+</html>
