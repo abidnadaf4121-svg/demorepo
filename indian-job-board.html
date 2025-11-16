@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Indian Job Board</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #ff671f;
+      --secondary-color: #046a38;
+      --accent-color: #0081cf;
+      --background-color: #f7f7fa;
+      --card-background: #fff;
+      --border-radius: 18px;
+      --dark: #333;
+      --gray: #aaa;
+    }
+    body {
+      font-family: 'Montserrat', 'Roboto', Arial, sans-serif;
+      background: linear-gradient(120deg, var(--primary-color) 0%, var(--background-color) 100%);
+      margin: 0;
+      min-height: 100vh;
+    }
+    header {
+      background: var(--card-background);
+      padding: 2rem 1.5rem 1.5rem 1.5rem;
+      box-shadow: 0 6px 22px rgba(0,0,0,0.08);
+      border-radius: var(--border-radius);
+      margin: 2rem auto 1rem auto;
+      max-width: 700px;
+      text-align: center;
+    }
+    header h1 {
+      color: var(--secondary-color);
+      font-weight: 700;
+      font-size: 2.5rem;
+      margin: 0;
+      letter-spacing: 2px;
+    }
+    header p {
+      color: var(--dark);
+      font-size: 1.15rem;
+      margin: 0.8rem 0 0 0;
+      font-weight: 400;
+    }
+    .job-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 1rem;
+      margin-top: 1.5rem;
+    }
+    .job-form input,
+    .job-form select,
+    .job-form button {
+      font-size: 1rem;
+      padding: 0.7rem 1rem;
+      border: 1px solid var(--gray);
+      border-radius: 9px;
+      background: var(--card-background);
+      transition: border-color 0.2s;
+    }
+    .job-form input:focus,
+    .job-form select:focus {
+      border-color: var(--accent-color);
+      outline: none;
+    }
+    .job-form button {
+      background: linear-gradient(90deg, var(--secondary-color) 70%, var(--accent-color));
+      color: #fff;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      transition: background 0.2s;
+    }
+    .job-form button:hover {
+      background: linear-gradient(90deg, var(--accent-color), var(--secondary-color), var(--accent-color));
+    }
+
+    .filters {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 1rem 0 0.5rem 0;
+      max-width: 700px;
+      margin: auto;
+    }
+    .filters select {
+      padding: 0.6rem 1rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--gray);
+      background: var(--card-background);
+      color: var(--dark);
+    }
+
+    .jobs-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      max-width: 980px;
+      margin: 1.5rem auto 2.2rem auto;
+      padding: 0 1rem;
+    }
+
+    .job-card {
+      background: var(--card-background);
+      border-radius: var(--border-radius);
+      box-shadow: 0 3px 17px rgba(0,0,0,0.11);
+      padding: 2rem 1.5rem 1.1rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      min-height: 170px;
+      transition: box-shadow 0.2s;
+      position: relative;
+      border-left: 7px solid var(--primary-color);
+    }
+    .job-card:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,0.17);
+      border-left: 7px solid var(--secondary-color);
+    }
+    .job-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--accent-color);
+      margin-bottom: 0.3rem;
+    }
+    .job-meta {
+      color: var(--dark);
+      font-weight: 500;
+      opacity: 0.95;
+      font-size: 1rem;
+      margin-bottom: 0.22rem;
+    }
+    .job-location, .job-type {
+      font-size: 1rem;
+      color: var(--secondary-color);
+      font-weight: 500;
+      margin-right: 8px;
+    }
+    .job-desc {
+      color: var(--dark);
+      margin-top: 0.6rem;
+      font-size: 1.02rem;
+      line-height: 1.53;
+      flex: 1;
+      margin-bottom: 0.6rem;
+    }
+    .apply-btn {
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+      color: #fff;
+      border: none;
+      padding: 0.65rem 1.4rem;
+      border-radius: 7px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      align-self: flx-end;
+      transition: background 0.2s;
+      box-shadow: 0 1px 7px rgba(0,0,0,0.08);
+      margin-top: auto;
+    }
+    .apply-btn:hover {
+      background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+    }
+    @media(max-width:500px){
+      header{
+        padding: 1.2rem 0.4rem;
+      }
+      .jobs-container {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+      }
+      .job-card {
+        padding: 1.5rem 0.5rem 0.7rem 0.7rem;
+      }
+      .job-title{ font-size: 1.1rem;}
+    }
+    footer {
+      text-align: center;
+      color: var(--gray);
+      font-size: 0.94rem;
+      margin-bottom: 0.55rem;
+      margin-top: 2rem;
+      opacity: 0.
